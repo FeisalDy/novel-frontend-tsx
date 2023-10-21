@@ -98,8 +98,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     const logout = async () => {
-        console.log('Logout function called')
-
         if (!error) {
             await axios.post('/logout').then(() => mutate())
         }
