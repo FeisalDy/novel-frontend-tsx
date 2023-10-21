@@ -17,7 +17,7 @@ export default function RootLayout ({
 }) {
     return (
         <html lang='en'>
-            <body className={inter.className}>
+            <body className='{inter.className} bg-[#F3f4f7]'>
                 <Nav />
                 <div className='max-w-screen-lg px-4 mx-auto my-4'>
                     {children}

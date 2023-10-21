@@ -28,7 +28,7 @@ const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
     password: z
         .string()
-        .min(3, { message: 'Password must be at least 8 characters long' }),
+        .min(3, { message: 'Password must be at least 3 characters long' }),
     errors: z.string().optional()
 })
 
@@ -102,7 +102,14 @@ const Login = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type='submit'>Submit</Button>
+                        {/* <Button type='submit'>Submit</Button> */}
+                        {isLoading ? (
+                            <Button type='submit' disabled>
+                                Submit
+                            </Button>
+                        ) : (
+                            <Button type='submit'>Submit</Button>
+                        )}
                     </form>
                 </Form>
             </CardContent>

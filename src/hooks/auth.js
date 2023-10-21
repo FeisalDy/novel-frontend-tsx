@@ -39,6 +39,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     const login = async ({ setErrors, setStatus, ...props }) => {
+        setIsLoading(true) // Set isLoading to true when login process starts
         setErrors([])
         // setStatus(null)
 
@@ -103,31 +104,29 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             await axios.post('/logout').then(() => mutate())
         }
 
-        window.location.pathname = '/login'
+        // window.location.pathname = '/login'
+        window.location.href = '/login'
     }
 
     const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(
-        () => {
-            if (user || error) {
-                setIsLoading(false)
-            }
-
-            // if (middleware === 'guest' && redirectIfAuthenticated && user)
-            //     router.push(redirectIfAuthenticated)
-            // if (
-            //     window.location.pathname === '/verify-email' &&
-            //     user?.email_verified_at
-            // )
-            //     router.push(redirectIfAuthenticated)
-            // if (middleware === 'auth' && error) logout()
-
-            if (middleware == 'guest' && user) router.push('/')
-            if (middleware == 'auth' && error) router.push('/login')
+    useEffect(() => {
+        if (user || error) {
+            setIsLoading(false)
         }
-        // [user, error]
-    )
+
+        // if (middleware === 'guest' && redirectIfAuthenticated && user)
+        //     router.push(redirectIfAuthenticated)
+        // if (
+        //     window.location.pathname === '/verify-email' &&
+        //     user?.email_verified_at
+        // )
+        //     router.push(redirectIfAuthenticated)
+        // if (middleware === 'auth' && error) logout()
+
+        if (middleware == 'guest' && user) router.push('/')
+        if (middleware == 'auth' && error) router.push('/login')
+    }, [user, error, middleware, router])
 
     return {
         user,
