@@ -1,5 +1,5 @@
 'use client'
-import useNovel from '@/hooks/useNovel'
+import { useNovel } from '@/hooks/useNovel'
 import Link from 'next/link'
 
 export default function NovelEntry ({ id }: { id: string }) {
@@ -10,7 +10,7 @@ export default function NovelEntry ({ id }: { id: string }) {
                 {novelLoading && <div>Loading...</div>}
                 {novel && (
                     <div>
-                        <h1>{novel.title}</h1>
+                        <h1>{novel.data.title}</h1>
                     </div>
                 )}
             </div>

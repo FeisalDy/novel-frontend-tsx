@@ -1,5 +1,4 @@
-export interface Novel {
-    // data: NovelItem[]
+export type Novel = {
     data: {
         type: string
         id: string
@@ -7,10 +6,6 @@ export interface Novel {
         author: string
         cover: string
         description: string
-        links: {
-            self: string
-            related: string
-        }
     }[]
     links: {
         first: string
@@ -28,10 +23,18 @@ export interface Novel {
         to: number
         total: number
     }
-    status: string
 }
 
-export interface NovelItem {
+export type TNovelItemArray = {
+    type: string
+    id: string
+    title: string
+    author: string
+    cover: string
+    description: string
+}
+
+export type NovelItem = {
     data: {
         type: string
         id: string
@@ -39,14 +42,10 @@ export interface NovelItem {
         author: string
         cover: string
         description: string
-        links: {
-            self: string
-            related: string
-        }
     }
 }
 
-export interface PageLink {
+export type PageLink = {
     url: string | null
     label: string
     active: boolean

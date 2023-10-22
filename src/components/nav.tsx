@@ -54,11 +54,11 @@ const Nav = () => {
 
     function onSubmit (values: z.infer<typeof formSchema>) {
         const { search } = values
-        router.push(`/search?search=${search}`, { scroll: false })
+        router.push(`/novel/list?search=${search}`, { scroll: false })
     }
 
     useEffect(() => {
-        if (pathname !== '/search') {
+        if (pathname !== '/novel/list') {
             form.reset({ search: '' })
         }
     }, [pathname, form])

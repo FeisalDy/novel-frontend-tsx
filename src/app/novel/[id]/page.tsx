@@ -3,9 +3,9 @@ import React from 'react'
 import { useParams } from 'next/navigation'
 import Head from 'next/head'
 import Image from 'next/image'
-import useNovel from '@/hooks/useNovel'
+import { useNovel } from '@/hooks/useNovel'
 
-const Novel = () => {
+export default function Novel () {
     const { id } = useParams() || ''
     let idValue: string = ''
 
@@ -16,21 +16,20 @@ const Novel = () => {
     }
 
     const { novel, novelLoading } = useNovel(idValue)
-    console.log(novel)
 
     return (
         <>
-            <Head>{novel && <title>{`${novel.title}`}</title>}</Head>
+            <Head>{novel && <title>{`${novel?.data.title}`}</title>}</Head>
 
             <div>
                 {novelLoading && <div>Loading...</div>}
                 {novel === null && <div>Not found</div>}
                 {novel && (
                     <>
-                        <h1>{novel.title}</h1>
+                        <h1>{novel.data.title}</h1>
                         <Image
-                            src={novel.cover}
-                            alt={novel.title}
+                            src={novel.data.cover}
+                            alt={novel.data.title}
                             width={400}
                             height={600}
                         />
@@ -40,5 +39,3 @@ const Novel = () => {
         </>
     )
 }
-
-export default Novel
