@@ -7,8 +7,9 @@ export default function Dashboard () {
     const searchParams = useSearchParams()
     const page = parseInt(searchParams.get('page') ?? '1')
     const limit = parseInt(searchParams.get('limit') ?? '10')
+    const search = ''
 
-    const { novels, novelsLoading } = useNovels(limit, page)
+    const { novels, novelsLoading } = useNovels(search, limit, page)
 
     return (
         <>

@@ -38,6 +38,8 @@ export function useNovels (search: string, limit: number, page: number) {
 
     return {
         novels: data,
-        novelsLoading: isLoading
+        novelsLoading: isLoading,
+        meta: data?.meta,
+        links: data?.links
     }
 }

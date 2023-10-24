@@ -10,9 +10,10 @@ const Home = () => {
     const searchParams = useSearchParams()
     const page = parseInt(searchParams.get('page') ?? '1', 1)
     const limit = parseInt(searchParams.get('limit') ?? '10', 10)
+    const search = ''
 
     const { data, isLoading } = useSWR([page], () =>
-        NovelApi.getNovels(limit, page)
+        NovelApi.getNovels(search, limit, page)
     )
 
     return (

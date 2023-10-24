@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/auth'
+import { ReloadIcon } from '@radix-ui/react-icons'
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -104,8 +105,8 @@ const Login = () => {
                         />
                         {/* <Button type='submit'>Submit</Button> */}
                         {isLoading ? (
-                            <Button type='submit' disabled>
-                                Submit
+                            <Button disabled>
+                                <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
                             </Button>
                         ) : (
                             <Button type='submit'>Submit</Button>
