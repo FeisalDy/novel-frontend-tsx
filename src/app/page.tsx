@@ -18,7 +18,6 @@ const Home = () => {
 
     return (
         <>
-            {/* <Recommendation /> */}
             <NovelEntry id='1' />
         </>
     )

@@ -8,7 +8,7 @@ export type TPagination = {
 export type TCPagination = {
     onPageChange: (page: number | string) => void
     totalCount: number
-    siblingCount?: number
+    siblingCount: number
     currentPage: number
     pageSize: number
     className: string

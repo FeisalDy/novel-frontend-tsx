@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { TPagination } from '@/models/Pagination'
-import { range, DOTS } from '@/lib/utils'
+import { range, DOTS, isMobile } from '@/lib/utils'
 
 export const usePagination = ({
     totalCount,
@@ -10,6 +10,9 @@ export const usePagination = ({
 }: TPagination) => {
     const paginationRange = useMemo(() => {
         const totalPageCount = Math.ceil(totalCount / pageSize)
+
+        const mobile = isMobile()
+
         const totalPageNumbers = siblingCount + 5
 
         if (totalPageNumbers >= totalPageCount) {

@@ -1,13 +1,6 @@
 'use client'
 import React from 'react'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -15,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -23,7 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/auth'
-import { ReloadIcon } from '@radix-ui/react-icons'
+import { ReloadIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -105,11 +97,17 @@ const Login = () => {
                         />
                         {/* <Button type='submit'>Submit</Button> */}
                         {isLoading ? (
-                            <Button disabled>
-                                <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                            <Button disabled className='bg-green-400'>
+                                <DotsHorizontalIcon className='h-4 w-4 animate-pulse ' />
+                                {/* Signing In */}
                             </Button>
                         ) : (
-                            <Button type='submit'>Submit</Button>
+                            <Button
+                                type='submit'
+                                className='bg-green-500 hover:bg-green-400'
+                            >
+                                Sign In
+                            </Button>
                         )}
                     </form>
                 </Form>

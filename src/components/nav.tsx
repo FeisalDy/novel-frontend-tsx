@@ -29,6 +29,7 @@ import {
     FormMessage
 } from '@/components/ui/form'
 import { useRouter, usePathname } from 'next/navigation'
+import { ModeToggle } from '@/components/ModeToggle'
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -105,7 +106,7 @@ export default function Nav () {
 
     return (
         <div
-            className='grid grid-cols-3 gap-4 items-center border-b-4 px-4'
+            className='grid grid-cols-3 gap-4 items-center px-4 border-b-2'
             ref={navRef}
         >
             <div className='flex'>
@@ -207,24 +208,39 @@ export default function Nav () {
                             {user ? (
                                 <Link href='#' legacyBehavior passHref>
                                     <NavigationMenuLink
-                                        className={navigationMenuTriggerStyle()}
+                                        className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
                                         onClick={logout}
                                     >
                                         Logout
                                     </NavigationMenuLink>
                                 </Link>
                             ) : (
-                                <Link href='/login' legacyBehavior passHref>
-                                    <NavigationMenuLink
-                                        className={navigationMenuTriggerStyle()}
+                                <div>
+                                    <Link href='/login' legacyBehavior passHref>
+                                        <NavigationMenuLink
+                                            // className={navigationMenuTriggerStyle()}
+                                            className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
+                                        >
+                                            Login
+                                        </NavigationMenuLink>
+                                    </Link>
+                                    <Link
+                                        href='/register'
+                                        legacyBehavior
+                                        passHref
                                     >
-                                        Login
-                                    </NavigationMenuLink>
-                                </Link>
+                                        <NavigationMenuLink
+                                            className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
+                                        >
+                                            Register
+                                        </NavigationMenuLink>
+                                    </Link>
+                                </div>
                             )}
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
+                <ModeToggle />
             </div>
         </div>
     )
