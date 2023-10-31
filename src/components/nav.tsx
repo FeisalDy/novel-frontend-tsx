@@ -11,7 +11,6 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
-import { Command, CommandInput, CommandEmpty } from '@/components/ui/command'
 import Image from 'next/image'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { useState, useEffect, useRef } from 'react'
@@ -30,6 +29,24 @@ import {
 } from '@/components/ui/form'
 import { useRouter, usePathname } from 'next/navigation'
 import { ModeToggle } from '@/components/ModeToggle'
+import { MagnifyingGlassIcon, CaretDownIcon } from '@radix-ui/react-icons'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import path from 'path'
+import { useTheme } from 'next-themes'
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -76,6 +93,8 @@ export default function Nav () {
     const router = useRouter()
     const pathname = usePathname()
 
+    const { theme, setTheme } = useTheme()
+
     const handleClick = () => {
         setActive(!active)
     }
@@ -102,11 +121,11 @@ export default function Nav () {
         }
     }, [pathname, form])
 
-    console.log(user?.data.role)
+    console.log(theme)
 
     return (
         <div
-            className='grid grid-cols-3 gap-4 items-center px-4 border-b-2'
+            className='grid grid-cols-2 gap-4 items-center px-4 border-b-2'
             ref={navRef}
         >
             <div className='flex'>
@@ -117,7 +136,9 @@ export default function Nav () {
                                 <Image src='/logo.svg' fill alt='Read Novel' />
                             </AspectRatio>
                         </div>
-                        <h1 className='px-2 font-bold text-xl'>Dragon Da</h1>
+                        <h1 className='px-2 font-bold text-xl hidden sm:block'>
+                            Dragon Da
+                        </h1>
                     </div>
                 </Link>
                 {user?.data.role === 'admin' && (
@@ -172,23 +193,53 @@ export default function Nav () {
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
+
+                            <NavigationMenuItem>
+                                <NavigationMenuTrigger>
+                                    Components
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
+                                        {components.map(component => (
+                                            <ListItem
+                                                key={component.title}
+                                                title={component.title}
+                                                href={component.href}
+                                            >
+                                                {component.description}
+                                            </ListItem>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href='/docs' legacyBehavior passHref>
+                                    <NavigationMenuLink
+                                        className={navigationMenuTriggerStyle()}
+                                    >
+                                        Documentation
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
                 )}
             </div>
 
-            <div className=''>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className='w-full max-w-sm items-center'>
+            <div className='flex items-center gap-2'>
+                <div className='grow'>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
                             <FormField
                                 control={form.control}
                                 name='search'
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className='relative space-y-0'>
+                                        <MagnifyingGlassIcon className='absolute left-2 top-2 w-6 h-6 ' />
                                         <FormControl>
                                             <Input
                                                 placeholder='Search...'
+                                                className='pl-10 focus-visible:ring-0'
                                                 {...field}
                                             />
                                         </FormControl>
@@ -196,51 +247,134 @@ export default function Nav () {
                                     </FormItem>
                                 )}
                             />
-                        </div>
-                    </form>
-                </Form>
-            </div>
+                        </form>
+                    </Form>
+                </div>
 
-            <div className='flex justify-end'>
-                <NavigationMenu>
-                    <NavigationMenuList>
-                        <NavigationMenuItem>
+                <div className='flex-none'>
+                    <div className='flex gap-2'>
+                        {/* {user && ( */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant='ghost'
+                                    className='focus-visible:ring-0 hover:bg-transparent'
+                                >
+                                    <div className='flex gap-2 items-center'>
+                                        <Avatar>
+                                            <AvatarImage src='https://github.com/shadcn.png' />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                        </Avatar>
+                                        <section className='flex items-center gap-1'>
+                                            {user?.data.name}
+                                            <CaretDownIcon />
+                                        </section>
+                                    </div>
+                                </Button>
+                            </DropdownMenuTrigger>
                             {user ? (
-                                <Link href='#' legacyBehavior passHref>
-                                    <NavigationMenuLink
-                                        className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
-                                        onClick={logout}
-                                    >
-                                        Logout
-                                    </NavigationMenuLink>
-                                </Link>
+                                <DropdownMenuContent
+                                    // className={`w-56 ${
+                                    //     theme === 'dark' ? 'bg-red-500' : ''
+                                    // }`}
+                                    className='w-56 dark:bg-[#171717]'
+                                >
+                                    <DropdownMenuLabel>
+                                        My Account
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            Profile
+                                            <DropdownMenuShortcut>
+                                                ⇧⌘P
+                                            </DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Billing
+                                            <DropdownMenuShortcut>
+                                                ⌘B
+                                            </DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Settings
+                                            <DropdownMenuShortcut>
+                                                ⌘S
+                                            </DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Keyboard shortcuts
+                                            <DropdownMenuShortcut>
+                                                ⌘K
+                                            </DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            Team
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSub>
+                                            <DropdownMenuSubTrigger>
+                                                Invite users
+                                            </DropdownMenuSubTrigger>
+                                            <DropdownMenuPortal>
+                                                <DropdownMenuSubContent>
+                                                    <DropdownMenuItem>
+                                                        Email
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        Message
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem>
+                                                        More...
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuSubContent>
+                                            </DropdownMenuPortal>
+                                        </DropdownMenuSub>
+                                        <DropdownMenuItem>
+                                            New Team
+                                            <DropdownMenuShortcut>
+                                                ⌘+T
+                                            </DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>GitHub</DropdownMenuItem>
+                                    <DropdownMenuItem>Support</DropdownMenuItem>
+                                    <DropdownMenuItem disabled>
+                                        API
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={logout}>
+                                        Log out
+                                        <DropdownMenuShortcut>
+                                            ⇧⌘Q
+                                        </DropdownMenuShortcut>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    {/* <DropdownMenuItem> */}
+                                    <ModeToggle />
+                                    {/* </DropdownMenuItem> */}
+                                </DropdownMenuContent>
                             ) : (
-                                <div>
-                                    <Link href='/login' legacyBehavior passHref>
-                                        <NavigationMenuLink
-                                            // className={navigationMenuTriggerStyle()}
-                                            className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
-                                        >
-                                            Login
-                                        </NavigationMenuLink>
-                                    </Link>
-                                    <Link
-                                        href='/register'
-                                        legacyBehavior
-                                        passHref
-                                    >
-                                        <NavigationMenuLink
-                                            className={`${navigationMenuTriggerStyle()} bg-transparent hover:text-green-500`}
-                                        >
-                                            Register
-                                        </NavigationMenuLink>
-                                    </Link>
-                                </div>
+                                <DropdownMenuContent className='w-56'>
+                                    <div className='w-full flex justify-center'>
+                                        <Button className='w-8/12 rounded-xl m-2'>
+                                            <Link href='/login' passHref>
+                                                Login
+                                            </Link>
+                                        </Button>
+                                    </div>
+                                    <DropdownMenuSeparator />
+                                    <ModeToggle />
+                                </DropdownMenuContent>
                             )}
-                        </NavigationMenuItem>
-                    </NavigationMenuList>
-                </NavigationMenu>
-                <ModeToggle />
+                        </DropdownMenu>
+                        {/* )} */}
+                    </div>
+                </div>
             </div>
         </div>
     )

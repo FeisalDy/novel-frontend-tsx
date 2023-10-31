@@ -15,7 +15,9 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/auth'
-import { ReloadIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import { Separator } from '@/components/ui/separator'
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -52,11 +54,11 @@ const Login = () => {
     }
 
     return (
-        <Card>
+        <Card className='max-w-xl mx-auto bg-transparent border-0'>
             <CardHeader>
                 <CardTitle>Login</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className='pb-4'>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -87,7 +89,7 @@ const Login = () => {
                                     <FormControl>
                                         <Input
                                             type='password'
-                                            placeholder=''
+                                            placeholder='Your Password'
                                             {...field}
                                         />
                                     </FormControl>
@@ -97,20 +99,29 @@ const Login = () => {
                         />
                         {/* <Button type='submit'>Submit</Button> */}
                         {isLoading ? (
-                            <Button disabled className='bg-green-400'>
+                            <Button disabled className='bg-green-400 w-full'>
                                 <DotsHorizontalIcon className='h-4 w-4 animate-pulse ' />
                                 {/* Signing In */}
                             </Button>
                         ) : (
                             <Button
                                 type='submit'
-                                className='bg-green-500 hover:bg-green-400'
+                                className='bg-green-500 hover:bg-green-400 w-full'
                             >
                                 Sign In
                             </Button>
                         )}
                     </form>
                 </Form>
+                <div className='w-full mx-auto my-8 items-center'>
+                    <Separator className='mb-6' />
+                    <p className='text-center'>
+                        Dont have an account? {''}
+                        <Link href='/register' className='text-green-500'>
+                            Sign Up
+                        </Link>
+                    </p>
+                </div>
             </CardContent>
         </Card>
     )

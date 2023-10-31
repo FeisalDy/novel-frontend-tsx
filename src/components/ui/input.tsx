@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 export interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {}
